@@ -57,6 +57,11 @@
 #define STBI_NO_LINEAR
 #define STBI_ASSERT SDL_assert
 #define STB_IMAGE_IMPLEMENTATION
+
+#if defined(__clang__)
+#include <stdlib.h>
+#endif
+
 #include "stb_image.h"
 
 static int IMG_LoadSTB_RW_read(void *user, char *data, int size)
