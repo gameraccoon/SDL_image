@@ -371,6 +371,7 @@ RECENT REVISION HISTORY:
 
 #define STBI_VERSION 1
 
+
 enum
 {
    STBI_default = 0, // only used for desired_channels
@@ -4800,12 +4801,17 @@ static stbi_uc first_row_filter[5] =
    STBI__F_paeth_first
 };
 
+
 static int stbi__paeth(int a, int b, int c)
 {
    int p = a + b - c;
-   int pa = abs(p-a);
-   int pb = abs(p-b);
-   int pc = abs(p-c);
+   // PATCH-START: tank-game. Fix for Clang compilation
+#define abs_patch(x) ((x) < 0 ? -(x) : (x))
+   int pa = abs_patch(p-a);
+   int pb = abs_patch(p-b);
+   int pc = abs_patch(p-c);
+#undef abs_patch
+// PATCH-END: tank-game. Fix for Clang compilation
    if (pa <= pb && pa <= pc) return a;
    if (pb <= pc) return b;
    return c;
